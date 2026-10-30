@@ -2,7 +2,7 @@
 
 Preview `v0.1.0-preview.17` is distributed as GitHub Release assets, **not on nuget.org**. It includes ten `.nupkg` files (the SDK, three adapters, build integration, native probe, Firebase Remote Config, and template) and a SHA-256 manifest.
 
-Prerequisites: Python 3, the GitHub `gh` CLI, .NET 10 and the platform toolchains. Android requires the .NET Android workload, Android SDK and JDK 17; iOS requires macOS, Xcode and the iOS workload. MAUI requires its corresponding workloads. The build does not install those toolchains for you.
+Prerequisites: Python 3.9+,  the GitHub `gh` CLI, .NET 10 and the platform toolchains. Android requires the .NET Android workload, Android SDK and JDK 17; iOS requires macOS, Xcode and the iOS workload. MAUI requires its corresponding workloads. The build does not install those toolchains for you.
 
 ```sh
 git clone https://github.com/kantagara/DotNative.Plugins.git

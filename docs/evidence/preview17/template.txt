@@ -1,0 +1,1 @@
+PASS generated plugin: ProjectReference and NuGet both execute native implementation

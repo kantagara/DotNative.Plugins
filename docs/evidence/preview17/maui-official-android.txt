@@ -1,0 +1,1 @@
+PASS: official dotnet new maui + dotnet add package + PluginHost.Register + worker native SHA256

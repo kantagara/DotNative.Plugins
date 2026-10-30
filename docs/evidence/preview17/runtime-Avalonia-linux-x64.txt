@@ -1,0 +1,3 @@
+PASS: Avalonia desktop: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Avalonia native SDK, errors and cancellation
+PASS: automatic host disposed on window close

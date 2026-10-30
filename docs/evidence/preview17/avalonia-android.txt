@@ -1,0 +1,4 @@
+PASS: Avalonia mobile cycle 1: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: automatic lifecycle disposed host and rejected pending native request
+PASS: Avalonia mobile cycle 2: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Avalonia mobile automatic root lifecycle restart

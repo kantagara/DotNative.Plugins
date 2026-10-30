@@ -1,5 +1,7 @@
 # DotNative.Plugins
 
+[![GitHub preview runtime checks](https://github.com/kantagara/DotNative.Plugins/actions/workflows/verify-preview.yml/badge.svg)](https://github.com/kantagara/DotNative.Plugins/actions/workflows/verify-preview.yml)
+
 Native service plugins for .NET applications. Write Kotlin for Android, Swift for Apple platforms, and C++ for Windows/Linux. Expose one C# API and use it from MAUI, Avalonia, Uno, or DotNative.
 
 **Preview distribution through GitHub Releases; no packages are published to nuget.org.** See [download and isolated sample instructions](docs/github-preview.md). Native view embedding is outside the current scope. Firebase Remote Config is one implemented plugin, not the entire Firebase SDK.
