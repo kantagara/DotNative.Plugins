@@ -1,0 +1,48 @@
+<Project Sdk="Uno.Sdk/6.3.28">
+  <PropertyGroup>
+    <DotNativeDevelopment>false</DotNativeDevelopment>
+    <UnoDisableHotDesign>true</UnoDisableHotDesign>
+    <SkiaSharpVersion>3.119.4</SkiaSharpVersion>
+    <AssemblyName>PluginUno</AssemblyName>
+    <PackageId>PluginUno</PackageId>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-desktop</TargetFramework>
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+    <DefineConstants Condition="$(RuntimeIdentifier.StartsWith('win-'))"
+      >$(DefineConstants);PLUGIN_WINDOWS</DefineConstants>
+    <DefineConstants Condition="$(RuntimeIdentifier.StartsWith('linux-'))"
+      >$(DefineConstants);PLUGIN_LINUX</DefineConstants>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UnoFeatures>SkiaRenderer</UnoFeatures>
+    <ApplicationTitle>Standalone Plugin Probe</ApplicationTitle>
+    <ApplicationId>com.dotnative.plugins.unoprobe</ApplicationId>
+    <RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/packages</RestoreAdditionalProjectSources>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Shared/PluginChecks.cs" Link="PluginChecks.cs" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.15" />
+    <PackageReference Include="DotNative.Plugins.Uno" Version="0.1.0-preview.15" />
+  </ItemGroup>
+  <Target Name="SelectDesktopHost" AfterTargets="UnoImplicitPackages">
+    <ItemGroup>
+      <PackageReference Remove="SkiaSharp.NativeAssets.Linux" />
+      <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
+      <PackageReference Remove="Uno.WinUI.Runtime.Skia.Wpf;Uno.WinUI.Runtime.Skia.Linux.FrameBuffer" />
+      <PackageReference
+        Remove="Uno.WinUI.Runtime.Skia.Win32"
+        Condition="!$(RuntimeIdentifier.StartsWith('win-'))"
+      />
+      <PackageReference
+        Remove="Uno.WinUI.Runtime.Skia.X11"
+        Condition="!$(RuntimeIdentifier.StartsWith('linux-'))"
+      />
+      <PackageReference
+        Remove="Uno.WinUI.Runtime.Skia.MacOS"
+        Condition="!$(RuntimeIdentifier.StartsWith('osx-'))"
+      />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <SupportedOSPlatformVersion
+      Condition="'$(SupportedOSPlatformVersion)' == '' or $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '23.0'))"
+      >23.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'android' or '$(RuntimeIdentifier)' == 'linux-bionic-arm64' or $(RuntimeIdentifier.StartsWith('android-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Android/*.kt" />
+    <DotNativeAndroidGradle Include="$(MSBuildThisFileDirectory)../Platform/Android/dependencies.gradle" />
+    <DotNativePluginEntry Include="FirebaseRemoteConfigPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'ios' or '$(TargetPlatformIdentifier)' == 'maccatalyst' or $(RuntimeIdentifier.StartsWith('ios-')) or $(RuntimeIdentifier.StartsWith('iossimulator-')) or $(RuntimeIdentifier.StartsWith('maccatalyst-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/iOS/*.swift" />
+    <DotNativeAppleDependencyManifest Include="$(MSBuildThisFileDirectory)../Platform/iOS/apple-dependencies.json" />
+    <DotNativePluginEntry Include="FirebaseRemoteConfigPlugin" />
+  </ItemGroup>
+</Project>

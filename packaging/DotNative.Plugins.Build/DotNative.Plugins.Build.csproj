@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TargetFramework>net9.0</TargetFramework>
+    <Version>0.1.0-preview.15</Version>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Standalone native service plugin build integration for .NET hosts.</Description>
+  </PropertyGroup>
+  <Target Name="PreparePluginBuildTools" BeforeTargets="_GetPackageFiles">
+    <MSBuild
+      Projects="../../tools/DotNative.NativeBuild/DotNative.NativeBuild.csproj;../../tools/DotNative.Plugins.Build/DotNative.Plugins.Build.csproj"
+      Targets="Restore;Build"
+      Properties="Configuration=Release"
+    />
+    <ItemGroup>
+      <None
+        Include="../../tools/DotNative.NativeBuild/bin/Release/net9.0/DotNative.NativeBuild.*"
+        Exclude="**/*.pdb"
+        Pack="true"
+        PackagePath="tools/NativeBuild"
+      />
+      <None
+        Include="../../tools/DotNative.Plugins.Build/bin/Release/net9.0/DotNative.Plugins.Build.*"
+        Exclude="**/*.pdb"
+        Pack="true"
+        PackagePath="tools/Build"
+      />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <None Include="../../native/plugins/cpp/*" Pack="true" PackagePath="tools/PluginSdk/cpp" />
+    <None Remove="tools/**/*" />
+    <None Include="tools/AndroidProject/gradlew" Pack="true" PackagePath="tools/AndroidProject/" />
+    <None
+      Include="tools/AndroidProject/gradle/wrapper/*"
+      Pack="true"
+      PackagePath="tools/AndroidProject/gradle/wrapper/"
+    />
+    <None Include="../../LICENSE;../../THIRD_PARTY_NOTICES" Pack="true" PackagePath="/" />
+    <None
+      Include="../../native/plugins/android/*.kt"
+      Pack="true"
+      PackagePath="tools/PluginSdk/android"
+    />
+    <None Update="buildTransitive/**/*" Pack="true" PackagePath="%(Identity)" />
+    <None
+      Include="../../native/plugins/apple/*.swift"
+      Exclude="../../native/plugins/apple/PlatformViews.swift"
+      Pack="true"
+      PackagePath="tools/PluginSdk/apple"
+    />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/standalone-plugins.md" Pack="true" PackagePath="/README.md" />
+  </ItemGroup>
+</Project>

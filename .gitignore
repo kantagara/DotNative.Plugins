@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+artifacts/
+.cache/
+.DS_Store
+*.user
+*.pfx
+*.mobileprovision
+firebase-test.json
+google-services.json
+GoogleService-Info.plist

@@ -1,0 +1,6 @@
+<Project>
+  <!-- Mobile app builds may use OutputType=Library. Bootstrap is safe in libraries too. -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AvaloniaPluginBootstrap.cs" />
+  </ItemGroup>
+</Project>

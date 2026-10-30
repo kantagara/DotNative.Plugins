@@ -1,0 +1,6 @@
+PASS: parameterless PluginHost.Register and worker-thread native call
+PASS: Avalonia native SDK, errors, cancellation, shutdown and restart
+PASS: automatic host disposed on window close
+PASS: parameterless PluginHost.Register and worker-thread native call
+PASS: Uno native SDK, errors, cancellation, shutdown and restart
+PASS: automatic host disposed on window close

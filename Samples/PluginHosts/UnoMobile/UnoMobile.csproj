@@ -1,0 +1,30 @@
+<Project Sdk="Uno.Sdk/6.3.28">
+  <PropertyGroup>
+    <DotNativeDevelopment>false</DotNativeDevelopment>
+    <UnoEnableHotReload>false</UnoEnableHotReload>
+    <UnoDisableHotDesign>true</UnoDisableHotDesign>
+    <TargetFrameworks>net10.0-android;net10.0-ios</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+    <UnoFeatures>SkiaRenderer</UnoFeatures>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>com.dotnative.plugins.unomobile</ApplicationId>
+    <ApplicationTitle>Plugin Uno Mobile</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net10.0-android'">30</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net10.0-ios'">16.0</SupportedOSPlatformVersion>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/packages</RestoreAdditionalProjectSources>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNative.Plugins.Uno" Version="0.1.0-preview.15" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.15" />
+    <PackageReference Include="SkiaSharp" Version="3.119.4" />
+    <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
+  </ItemGroup>
+</Project>

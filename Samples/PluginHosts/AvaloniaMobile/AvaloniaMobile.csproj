@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DotNativeDevelopment>false</DotNativeDevelopment>
+    <TargetFrameworks>net10.0-android;net10.0-ios</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>com.dotnative.plugins.avaloniamobile</ApplicationId>
+    <ApplicationTitle>Plugin Avalonia Mobile</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net10.0-android'">30</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net10.0-ios'">16.0</SupportedOSPlatformVersion>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidManifest>Platforms/Android/AndroidManifest.xml</AndroidManifest>
+    <ApplicationManifest Condition="'$(TargetFramework)' == 'net10.0-ios'">Platforms/iOS/Info.plist</ApplicationManifest>
+    <RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/packages</RestoreAdditionalProjectSources>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNative.Plugins.Avalonia" Version="0.1.0-preview.15" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.15" />
+    <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+    <AndroidResource Include="Platforms/Android/Resources/**/*.xml" />
+    <PackageReference Include="Avalonia.Android" Version="11.3.10" />
+    <Compile Remove="Platforms/iOS/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-ios'">
+    <PackageReference Include="Avalonia.iOS" Version="11.3.10" />
+    <Compile Remove="Platforms/Android/**/*.cs" />
+  </ItemGroup>
+</Project>

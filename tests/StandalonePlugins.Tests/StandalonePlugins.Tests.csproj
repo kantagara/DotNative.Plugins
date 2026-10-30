@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory)../../artifacts/standalone-plugins/packages</RestoreAdditionalProjectSources>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.15" />
+    <Compile Include="../DotNative.Tests/EventChannelTests.cs" Link="EventChannelTests.cs" />
+  </ItemGroup>
+</Project>

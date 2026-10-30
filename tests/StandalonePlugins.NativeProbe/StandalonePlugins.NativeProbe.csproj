@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TargetFramework>net9.0</TargetFramework>
+    <PackageId>DotNative.Plugins.NativeProbe</PackageId>
+    <Version>0.1.0-preview.15</Version>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/DotNative.Plugins.Core/DotNative.Plugins.Core.csproj" />
+    <ProjectReference Include="../../src/DotNative.Plugins.Native/DotNative.Plugins.Native.csproj" />
+    <ProjectReference
+      Include="../../packaging/DotNative.Plugins.Build/DotNative.Plugins.Build.csproj"
+      PrivateAssets="none"
+    />
+    <None Update="Platform/**/*;buildTransitive/**/*" Pack="true" PackagePath="%(Identity)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/standalone-plugins.md" Pack="true" PackagePath="/README.md" />
+  </ItemGroup>
+</Project>

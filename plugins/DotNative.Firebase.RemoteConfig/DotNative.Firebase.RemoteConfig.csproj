@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Version>0.0.3</Version>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DotNativePluginEntry>FirebaseRemoteConfigPlugin</DotNativePluginEntry>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Experimental native Firebase Remote Config integration for .NET hosts.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNative.Plugins.Core" Version="0.1.0-preview.15" />
+    <PackageReference
+      Include="DotNative.Plugins.Build"
+      Version="0.1.0-preview.15"
+      PrivateAssets="none"
+    />
+    <None
+      Update="Platform/**/*;buildTransitive/**/*;README.md"
+      Pack="true"
+      PackagePath="%(Identity)"
+    />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

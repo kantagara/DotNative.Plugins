@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DotNativeDevelopment>false</DotNativeDevelopment>
+    <TargetFrameworks Condition="'$(PluginSamplePlatform)' == ''"
+      >net10.0-android;net10.0-ios</TargetFrameworks>
+    <TargetFrameworks Condition="'$(PluginSamplePlatform)' != ''"
+      >$(PluginSamplePlatform)</TargetFrameworks>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <OutputType>Exe</OutputType>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationTitle>Standalone Plugin Probe</ApplicationTitle>
+    <ApplicationId>com.dotnative.plugins.mauiprobe</ApplicationId>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <SupportedOSPlatformVersion
+      Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'"
+      >16.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion
+      Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'"
+      >30.0</SupportedOSPlatformVersion>
+    <RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/packages</RestoreAdditionalProjectSources>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Shared/PluginChecks.cs" Link="PluginChecks.cs" />
+    <PackageReference Include="DotNative.Firebase.RemoteConfig" Version="0.0.3" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.15" />
+    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.15" />
+    <PackageReference
+      Include="DotNative.Plugins.Android"
+      Version="0.1.0-preview.15"
+      Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'"
+    />
+  </ItemGroup>
+  <ItemGroup Condition="'$(FirebaseTestConfig)' != ''">
+    <EmbeddedResource Include="$(FirebaseTestConfig)" LogicalName="firebase-test.json" />
+  </ItemGroup>
+</Project>

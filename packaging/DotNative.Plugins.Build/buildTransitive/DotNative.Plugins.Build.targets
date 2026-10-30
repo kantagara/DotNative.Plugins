@@ -1,0 +1,155 @@
+<Project>
+  <PropertyGroup>
+    <_StandalonePluginPackage>$(MSBuildThisFileDirectory)..</_StandalonePluginPackage>
+    <DotNativePluginMinimumOS
+      Condition="'$(DotNativePluginMinimumOS)' == '' and '$(SupportedOSPlatformVersion)' != ''"
+      >$(SupportedOSPlatformVersion)</DotNativePluginMinimumOS>
+    <DotNativePluginMinimumOS Condition="'$(DotNativePluginMinimumOS)' == ''"
+      >16.0</DotNativePluginMinimumOS>
+  </PropertyGroup>
+  <Target
+    Name="BuildStandaloneDesktopPlugins"
+    BeforeTargets="ResolveReferences"
+    Condition="'$(TargetPlatformIdentifier)' != 'android'"
+    DependsOnTargets="CollectDotNativeProjectPlugins;BuildStandaloneNativePlugins"
+  />
+  <Target
+    Name="BuildStandaloneAndroidPlugins"
+    BeforeTargets="_CategorizeAndroidLibraries"
+    Condition="'$(TargetPlatformIdentifier)' == 'android'"
+    DependsOnTargets="ResolveAssemblyReferences;CollectDotNativeProjectPlugins;BuildStandaloneNativePlugins"
+  />
+  <!-- Ask plugin projects for their assets in the consumer's platform context.
+       This target evaluates exports only: it never builds the plugin for the app RID. -->
+  <Target
+    Name="CollectDotNativeProjectPlugins"
+    Condition="'$(DesignTimeBuild)' != 'true' and '$(IsCrossTargetingBuild)' != 'true' and '$(DotNativePluginKind)' != 'Native' and '$(DotNativePluginBuilder)' == ''"
+  >
+    <MSBuild
+      Projects="@(ProjectReference)"
+      Targets="GetDotNativePluginAssets"
+      SkipNonexistentTargets="true"
+      Properties="DotNativePluginExport=true;RuntimeIdentifier=$(RuntimeIdentifier);TargetPlatformIdentifier=$(TargetPlatformIdentifier)"
+      RemoveProperties="TargetFramework;TargetFrameworks;SelfContained;PublishAot"
+    >
+      <Output TaskParameter="TargetOutputs" ItemName="_DotNativeProjectAssets" />
+    </MSBuild>
+    <ItemGroup>
+      <DotNativeNativeSource
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeNativeSource'"
+      />
+      <DotNativePluginEntry
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativePluginEntry'"
+      />
+      <DotNativeNativeLibrary
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeNativeLibrary'"
+      />
+      <DotNativeNativeFramework
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeNativeFramework'"
+      />
+      <DotNativeAppleFrameworkSearchPath
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeAppleFrameworkSearchPath'"
+      />
+      <DotNativeAppleDependencyManifest
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeAppleDependencyManifest'"
+      />
+      <DotNativeAndroidGradle
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeAndroidGradle'"
+      />
+      <DotNativeNativeLinkerArgument
+        Include="@(_DotNativeProjectAssets)"
+        Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeNativeLinkerArgument'"
+      />
+    </ItemGroup>
+  </Target>
+  <Target
+    Name="BuildStandaloneNativePlugins"
+    Condition="'$(DesignTimeBuild)' != 'true' and '$(IsCrossTargetingBuild)' != 'true' and '$(DotNativePluginBuilder)' == '' and '$(DotNativePluginKind)' != 'Native' and '@(DotNativePluginEntry)' != ''"
+  >
+    <Error
+      Condition="'$(TargetPlatformIdentifier)' != 'android' and '$(RuntimeIdentifier)' != 'maccatalyst-arm64' and '$(RuntimeIdentifier)' != 'maccatalyst-x64' and '$(RuntimeIdentifier)' != 'iossimulator-x64' and '$(RuntimeIdentifier)' != 'osx-arm64' and '$(RuntimeIdentifier)' != 'ios-arm64' and '$(RuntimeIdentifier)' != 'iossimulator-arm64' and '$(RuntimeIdentifier)' != 'android-arm64' and '$(RuntimeIdentifier)' != 'win-arm64' and '$(RuntimeIdentifier)' != 'linux-arm64' and '$(RuntimeIdentifier)' != 'linux-x64' and '$(RuntimeIdentifier)' != 'win-x64'"
+      Text="DNPLUG001: Unsupported standalone plugin target: $(RuntimeIdentifier)."
+    />
+    <PropertyGroup>
+      <_StandalonePluginRid>$(RuntimeIdentifier)</_StandalonePluginRid>
+      <_StandalonePluginRid Condition="'$(TargetPlatformIdentifier)' == 'android'"
+        >android</_StandalonePluginRid>
+      <_StandalonePluginOutput>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)standalone-plugins'))</_StandalonePluginOutput>
+      <_StandalonePluginPlan>$(_StandalonePluginOutput)/standalone-plugins.targets</_StandalonePluginPlan>
+      <_StandaloneDotnet Condition="'$(DotNetHostPath)' != ''">$(DotNetHostPath)</_StandaloneDotnet>
+      <_StandaloneDotnet Condition="'$(_StandaloneDotnet)' == ''">dotnet</_StandaloneDotnet>
+    </PropertyGroup>
+    <MakeDir Directories="$(_StandalonePluginOutput)" />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/host-android-libraries.txt"
+      Lines="@(AndroidLibrary->'%(FullPath)');@(AndroidAarLibrary->'%(FullPath)');@(AndroidJavaLibrary->'%(FullPath)');@(ReferencePath->'%(FullPath)')"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-sources.txt"
+      Lines="@(DotNativeNativeSource->'%(FullPath)')"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-entries.txt"
+      Lines="@(DotNativePluginEntry)"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-libraries.txt"
+      Lines="@(DotNativeNativeLibrary->'%(FullPath)')"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-linker-arguments.txt"
+      Lines="@(DotNativeNativeLinkerArgument)"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-frameworks.txt"
+      Lines="@(DotNativeNativeFramework)"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-framework-search-paths.txt"
+      Lines="@(DotNativeAppleFrameworkSearchPath->'%(FullPath)')"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-apple-manifests.txt"
+      Lines="@(DotNativeAppleDependencyManifest->'%(FullPath)')"
+      Overwrite="true"
+    />
+    <WriteLinesToFile
+      File="$(_StandalonePluginOutput)/plugin-gradle.txt"
+      Lines="@(DotNativeAndroidGradle->'%(FullPath)')"
+      Overwrite="true"
+    />
+    <Exec Command="&quot;$(_StandaloneDotnet)&quot; &quot;$(_StandalonePluginPackage)/tools/Build/DotNative.Plugins.Build.dll&quot; &quot;$(_StandalonePluginOutput)&quot; &quot;$(_StandalonePluginRid)&quot; &quot;$(DotNativePluginMinimumOS)&quot; &quot;$(_StandalonePluginPackage)&quot;" />
+    <MSBuild Projects="$(_StandalonePluginPlan)" Targets="GetAndroidLibrary">
+      <Output TaskParameter="TargetOutputs" ItemName="AndroidLibrary" />
+    </MSBuild>
+    <MSBuild Projects="$(_StandalonePluginPlan)" Targets="GetProguardConfiguration">
+      <Output TaskParameter="TargetOutputs" ItemName="ProguardConfiguration" />
+    </MSBuild>
+    <MSBuild Projects="$(_StandalonePluginPlan)" Targets="GetNativeReference">
+      <Output TaskParameter="TargetOutputs" ItemName="NativeReference" />
+    </MSBuild>
+    <MSBuild Projects="$(_StandalonePluginPlan)" Targets="GetBundleResource">
+      <Output TaskParameter="TargetOutputs" ItemName="BundleResource" />
+    </MSBuild>
+    <MSBuild Projects="$(_StandalonePluginPlan)" Targets="GetNone">
+      <Output TaskParameter="TargetOutputs" ItemName="None" />
+    </MSBuild>
+    <MSBuild Projects="$(_StandalonePluginPlan)" Targets="GetLinkerArgument">
+      <Output TaskParameter="TargetOutputs" ItemName="LinkerArgument" />
+    </MSBuild>
+  </Target>
+</Project>

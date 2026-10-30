@@ -1,0 +1,4 @@
+PASS: Uno mobile cycle 1: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: automatic lifecycle disposed host and rejected pending native request
+PASS: Uno mobile cycle 2: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Uno mobile automatic root lifecycle restart

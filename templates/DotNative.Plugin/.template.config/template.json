@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "DotNative",
+  "identity": "DotNative.Plugins.Native",
+  "name": "Independent .NET native service plugin",
+  "shortName": "dotnative-plugin",
+  "sourceName": "PluginTemplate",
+  "preferNameDirectory": true,
+  "classifications": [
+    "Native",
+    "Plugin",
+    "MAUI",
+    "Avalonia",
+    "Uno"
+  ],
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "nativeSymbol": {
+      "type": "generated",
+      "generator": "regex",
+      "parameters": {
+        "source": "name",
+        "steps": [
+          {
+            "regex": "[^A-Za-z0-9_]",
+            "replacement": "_"
+          }
+        ]
+      },
+      "replaces": "PluginNativeSymbol",
+      "fileRename": "PluginNativeSymbol"
+    },
+    "channelName": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "name",
+        "toLower": true
+      },
+      "replaces": "pluginchannel"
+    },
+    "bundleCharacters": {
+      "type": "generated",
+      "generator": "regex",
+      "parameters": {
+        "source": "name",
+        "steps": [
+          {
+            "regex": "[^A-Za-z0-9]",
+            "replacement": ""
+          }
+        ]
+      }
+    },
+    "bundleName": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "bundleCharacters",
+        "toLower": true
+      },
+      "replaces": "pluginbundle"
+    }
+  },
+  "sources": [
+    {
+      "exclude": [
+        "**/bin/**",
+        "**/obj/**",
+        ".template.config/**",
+        "**/.DS_Store"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('ios'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/iOS/**/*.swift" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('maccatalyst-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/iOS/**/*.swift" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('osx-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Mac/**/*.swift" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('linux-bionic-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Android/**/*.kt" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="('$(TargetPlatformIdentifier)' == 'android' or $([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('android')))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Android/**/*.kt" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('win-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Windows/**/*.cpp" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('linux-')) and !$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('linux-bionic-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Linux/**/*.cpp" />
+    <DotNativePluginEntry Include="PPluginNativeSymbolPlugin" />
+  </ItemGroup>
+  <Target Name="GetDotNativePluginAssets" Returns="@(_DotNativeExport)">
+    <ItemGroup>
+      <_DotNativeExport Include="@(DotNativeNativeSource-&gt;'%(FullPath)')">
+        <AssetType>DotNativeNativeSource</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativePluginEntry)">
+        <AssetType>DotNativePluginEntry</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativeNativeLibrary-&gt;'%(FullPath)')">
+        <AssetType>DotNativeNativeLibrary</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativeNativeFramework)">
+        <AssetType>DotNativeNativeFramework</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativeAppleFrameworkSearchPath-&gt;'%(FullPath)')">
+        <AssetType>DotNativeAppleFrameworkSearchPath</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativeAppleDependencyManifest-&gt;'%(FullPath)')">
+        <AssetType>DotNativeAppleDependencyManifest</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativeAndroidGradle-&gt;'%(FullPath)')">
+        <AssetType>DotNativeAndroidGradle</AssetType>
+      </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativeNativeLinkerArgument)">
+        <AssetType>DotNativeNativeLinkerArgument</AssetType>
+      </_DotNativeExport>
+    </ItemGroup>
+  </Target>
+</Project>

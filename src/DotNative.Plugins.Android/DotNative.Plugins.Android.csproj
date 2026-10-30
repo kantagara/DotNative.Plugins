@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>30.0</SupportedOSPlatformVersion>
+    <Version>0.1.0-preview.15</Version>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Kotlin.StdLib" Version="2.2.20" />
+    <ProjectReference Include="../DotNative.Plugins.Native/DotNative.Plugins.Native.csproj" />
+    <ProjectReference Include="../DotNative.Plugins.Core/DotNative.Plugins.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/standalone-plugins.md" Pack="true" PackagePath="/README.md" />
+  </ItemGroup>
+</Project>

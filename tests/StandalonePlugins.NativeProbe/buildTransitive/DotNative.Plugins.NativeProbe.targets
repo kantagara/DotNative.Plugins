@@ -1,0 +1,21 @@
+<Project>
+  <ItemGroup>
+    <DotNativeNativeSource
+      Include="$(MSBuildThisFileDirectory)../Platform/Apple/Probe.swift"
+      Condition="'$(RuntimeIdentifier)' == 'osx-arm64' or '$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64'"
+    />
+    <DotNativeNativeSource
+      Include="$(MSBuildThisFileDirectory)../Platform/Android/Probe.kt"
+      Condition="'$(TargetPlatformIdentifier)' == 'android' or '$(RuntimeIdentifier)' == 'android-arm64'"
+    />
+    <DotNativePluginEntry Include="StandaloneProbe" />
+    <DotNativeNativeSource
+      Include="$(MSBuildThisFileDirectory)../Platform/Desktop/Probe.cpp"
+      Condition="'$(RuntimeIdentifier)' == 'win-arm64' or '$(RuntimeIdentifier)' == 'win-x64' or '$(RuntimeIdentifier)' == 'linux-arm64' or '$(RuntimeIdentifier)' == 'linux-x64'"
+    />
+    <DotNativeNativeLinkerArgument
+      Include="-lcrypto"
+      Condition="'$(RuntimeIdentifier)' == 'linux-arm64' or '$(RuntimeIdentifier)' == 'linux-x64'"
+    />
+  </ItemGroup>
+</Project>

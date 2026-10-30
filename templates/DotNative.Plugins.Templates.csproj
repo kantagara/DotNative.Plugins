@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <PackageId>DotNative.Plugins.Templates</PackageId>
+    <Version>0.1.0-preview.15</Version>
+    <PackageType>Template</PackageType>
+    <Description>Framework-independent Kotlin/Swift native service plugin template with static C# APIs.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content
+      Include="DotNative.Plugin/**/*"
+      Exclude="**/bin/**;**/obj/**;**/.DS_Store"
+      Pack="true"
+    />
+    <None Include="DotNative.Plugin/README.md" Pack="true" PackagePath="/README.md" />
+    <None Include="../LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

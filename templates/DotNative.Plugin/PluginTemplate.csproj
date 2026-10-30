@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>PluginTemplate</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DotNativePluginKind>Native</DotNativePluginKind>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <DotNativePluginEntry>PPluginNativeSymbolPlugin</DotNativePluginEntry>
+  </PropertyGroup>
+  <ItemGroup>
+    <None
+      Update="Platform/**/*;buildTransitive/**/*;README.md"
+      Pack="true"
+      PackagePath="%(Identity)"
+    />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="example*/**/*.cs" />
+    <None Remove="example*/**/*" />
+    <PackageReference Include="DotNative.Plugins.Core" Version="0.1.0-preview.15" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference
+      Include="DotNative.Plugins.Build"
+      Version="0.1.0-preview.15"
+      PrivateAssets="none"
+    />
+    <PackageReference
+      Include="Microsoft.Extensions.DependencyInjection.Abstractions"
+      Version="9.0.0"
+    />
+  </ItemGroup>
+  <Import
+    Project="buildTransitive/PluginTemplate.targets"
+    Condition="'$(DotNativePluginExport)' == 'true'"
+  />
+</Project>

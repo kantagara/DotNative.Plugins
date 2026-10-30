@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "dependencies": [
+    {
+      "id": "firebase-ios",
+      "version": "12.12.0",
+      "url": "https://github.com/firebase/firebase-ios-sdk/releases/download/12.12.0/Firebase.zip",
+      "sha256": "91bb387762db0f20db3778ac862b28691b8a01c10f394c6612cf0998e0a631d3",
+      "xcframeworks": [
+        "Firebase/FirebaseAnalytics/FBLPromises.xcframework",
+        "Firebase/FirebaseAnalytics/FirebaseCore.xcframework",
+        "Firebase/FirebaseAnalytics/FirebaseCoreInternal.xcframework",
+        "Firebase/FirebaseAnalytics/FirebaseInstallations.xcframework",
+        "Firebase/FirebaseAnalytics/GoogleUtilities.xcframework",
+        "Firebase/FirebaseCrashlytics/FirebaseRemoteConfigInterop.xcframework",
+        "Firebase/FirebaseRemoteConfig/FirebaseABTesting.xcframework",
+        "Firebase/FirebaseRemoteConfig/FirebaseRemoteConfig.xcframework",
+        "Firebase/FirebaseRemoteConfig/FirebaseRemoteConfigInterop.xcframework",
+        "Firebase/FirebaseRemoteConfig/FirebaseSharedSwift.xcframework"
+      ],
+      "systemFrameworks": [
+        "Security",
+        "SystemConfiguration"
+      ]
+    }
+  ]
+}
