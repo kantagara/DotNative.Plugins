@@ -36,7 +36,7 @@ Consumers can use a direct `ProjectReference` during development or the packed N
 
 `DotNative.Plugins.Build` imports transitive MSBuild targets. Android sources and Maven dependencies are assembled with Gradle and merged into the .NET Android application. Apple sources and pinned SDK archive manifests are compiled/linked into the application. Windows/Linux compile the C++ backend with the platform toolchain. Applications still need the appropriate platform SDKs and any service configuration, permissions, entitlements, or signing required by that plugin.
 
-There is no Rust toolchain, Rust source, or DotNative renderer dependency in this repository. Android uses the .NET Android bridge to Kotlin; Apple and desktop use a small native ABI.
+Android uses the .NET Android bridge to Kotlin; Apple and desktop use a small native ABI.
 
 ## Build from source
 
