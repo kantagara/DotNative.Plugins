@@ -21,12 +21,12 @@
   <ItemGroup>
     <Compile Remove="example*/**/*.cs" />
     <None Remove="example*/**/*" />
-    <PackageReference Include="DotNative.Plugins.Core" Version="0.1.0-preview.15" />
+    <PackageReference Include="DotNative.Plugins.Core" Version="0.1.0-preview.16" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference
       Include="DotNative.Plugins.Build"
-      Version="0.1.0-preview.15"
+      Version="0.1.0-preview.16"
       PrivateAssets="none"
     />
     <PackageReference

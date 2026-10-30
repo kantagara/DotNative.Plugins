@@ -10,7 +10,7 @@ A native service plugin with a static C# API. No Rust and no UI framework depend
 - `example-standalone/` runs the native code in a desktop console application.
 
 Configure a NuGet source containing the SDK preview packages before building.
-The current packages are local previews, not a public NuGet release.
+Download preview packages from https://github.com/kantagara/DotNative.Plugins/releases and add that folder as a NuGet source alongside nuget.org. They are not published to nuget.org.
 
 ```sh
 dotnet run --project example-standalone

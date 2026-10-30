@@ -13,11 +13,11 @@ parser.add_argument("--android-apk", type=Path)
 parser.add_argument("--apple-library", type=Path)
 args = parser.parse_args()
 packages = args.packages
-version = "0.1.0-preview.15"
+version = "0.1.0-preview.16"
 
 
 def archive(name):
-    package_version = "0.1.0-preview.15" if name == "DotNative.Plugins.Build" else version
+    package_version = "0.1.0-preview.16" if name == "DotNative.Plugins.Build" else version
     return ZipFile(packages / f"{name}.{package_version}.nupkg")
 
 

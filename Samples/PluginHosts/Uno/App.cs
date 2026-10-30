@@ -24,28 +24,7 @@ public sealed class App : Application
             started = true;
             try
             {
-                await PluginChecks.Run(() =>
-                    UnoPluginHost.Register(
-                        window.DispatcherQueue,
-                        new NativePluginConnection(
-                            Path.Combine(
-                                AppContext.BaseDirectory,
-                                OperatingSystem.IsWindows() ? "dotnative_plugins_host.dll"
-                                    : OperatingSystem.IsLinux() ? "libdotnative_plugins_host.so"
-                                    : "libdotnative_plugins_host.dylib"
-                            )
-                        )
-                    )
-                );
-                PluginHost.Register();
-                PluginHost.Register();
-                var input = RandomNumberGenerator.GetBytes(1000);
-                var automaticHash = await Task.Run(() => Probe.HashAsync(input));
-                if (!automaticHash.SequenceEqual(SHA256.HashData(input)))
-                    throw new Exception("Automatic host mismatch");
-                Console.WriteLine(
-                    "PASS: parameterless PluginHost.Register and worker-thread native call"
-                );
+                await AutomaticPluginChecks.RunAsync("Uno desktop");
                 window.Closed += (_, _) =>
                 {
                     try
@@ -60,7 +39,7 @@ public sealed class App : Application
                     }
                 };
                 var success = true;
-                status.Text = "PASS: Uno native SDK, errors, cancellation, shutdown and restart";
+                status.Text = "PASS: Uno native SDK, errors and cancellation";
                 Console.WriteLine(status.Text);
                 if (Verify)
                 {

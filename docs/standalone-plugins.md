@@ -2,7 +2,7 @@
 
 Native service plugins for .NET applications. Write Kotlin for Android, Swift for Apple platforms, and C++ for Windows/Linux. Expose one C# API and use it from MAUI, Avalonia, Uno, or DotNative.
 
-**Preview source release. Packages are built locally; the commands below do not assume a public NuGet release.** Native view embedding is outside the current scope. Firebase Remote Config is one implemented plugin, not the entire Firebase SDK.
+**Preview distribution through GitHub Releases; no packages are published to nuget.org.** See [download and isolated sample instructions](docs/github-preview.md). Native view embedding is outside the current scope. Firebase Remote Config is one implemented plugin, not the entire Firebase SDK.
 
 ## Application code
 
@@ -21,10 +21,10 @@ MAUI uses a page's `Loaded` event, Avalonia uses an opened window or attached ro
 
 ## Create a plugin without the DotNative CLI
 
-After building the local packages:
+After downloading the GitHub preview packages (or building them locally):
 
 ```sh
-dotnet new install ./artifacts/standalone-plugins/packages/DotNative.Plugins.Templates.0.1.0-preview.15.nupkg
+dotnet new install ./artifacts/standalone-plugins/packages/DotNative.Plugins.Templates.0.1.0-preview.16.nupkg
 dotnet new dotnative-plugin -n Acme.NativeInfo
 ```
 
@@ -54,7 +54,7 @@ Set `DOTNET` to a specific SDK executable when needed. Native consumers use only
 
 - `Samples/PluginHosts/Avalonia` and `Uno`: actual desktop applications with `--verify` mode.
 - `Samples/PluginHosts/AvaloniaMobile` and `UnoMobile`: Android/iOS applications.
-- `Samples/PluginHosts/Maui`: native probe plus Firebase Remote Config. Supply your own local options file with `-p:FirebaseTestConfig=/path/to/firebase-test.json`; no credentials are committed.
+- `Samples/PluginHosts/Maui`: native probe with optional Firebase Remote Config. Supply your own local options file with `-p:FirebaseTestConfig=/path/to/firebase-test.json`; no credentials are committed.
 - `plugins/DotNative.Firebase.RemoteConfig`: focused Android/Apple Firebase implementation.
 - `tests/StandalonePlugins.NativeProbe`: native transport verification plugin.
 

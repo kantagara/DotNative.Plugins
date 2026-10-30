@@ -25,17 +25,20 @@
     <RestorePackagesPath>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../Shared/PluginChecks.cs" Link="PluginChecks.cs" />
-    <PackageReference Include="DotNative.Firebase.RemoteConfig" Version="0.0.3" />
+    <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
+    <PackageReference Include="DotNative.Firebase.RemoteConfig" Version="0.1.0-preview.16" Condition="'$(FirebaseTestConfig)' != ''" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
-    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.15" />
-    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.15" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.16" />
+    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.16" />
     <PackageReference
       Include="DotNative.Plugins.Android"
-      Version="0.1.0-preview.15"
+      Version="0.1.0-preview.16"
       Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'"
     />
   </ItemGroup>
+  <PropertyGroup Condition="'$(FirebaseTestConfig)' != ''">
+    <DefineConstants>$(DefineConstants);FIREBASE_TEST</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Condition="'$(FirebaseTestConfig)' != ''">
     <EmbeddedResource Include="$(FirebaseTestConfig)" LogicalName="firebase-test.json" />
   </ItemGroup>

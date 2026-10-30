@@ -43,7 +43,7 @@ with tempfile.TemporaryDirectory(prefix="dotnative-scaffold-") as directory:
     plugin = work / "Acme.Sample"
     if args.template:
         hive = work / "template-hive"
-        run("dotnet", "new", "install", feed / "DotNative.Plugins.Templates.0.1.0-preview.15.nupkg",
+        run("dotnet", "new", "install", feed / "DotNative.Plugins.Templates.0.1.0-preview.16.nupkg",
             "--debug:custom-hive", hive)
         run("dotnet", "new", "dotnative-plugin", "-n", "Acme.Sample", "-o", plugin,
             "--debug:custom-hive", hive)

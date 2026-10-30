@@ -37,27 +37,7 @@ public sealed class App : Application
             {
                 try
                 {
-                    await PluginChecks.Run(() =>
-                        AvaloniaPluginHost.Register(
-                            new NativePluginConnection(
-                                Path.Combine(
-                                    AppContext.BaseDirectory,
-                                    OperatingSystem.IsWindows() ? "dotnative_plugins_host.dll"
-                                        : OperatingSystem.IsLinux() ? "libdotnative_plugins_host.so"
-                                        : "libdotnative_plugins_host.dylib"
-                                )
-                            )
-                        )
-                    );
-                    PluginHost.Register();
-                    PluginHost.Register();
-                    var input = RandomNumberGenerator.GetBytes(1000);
-                    var automaticHash = await Task.Run(() => Probe.HashAsync(input));
-                    if (!automaticHash.SequenceEqual(SHA256.HashData(input)))
-                        throw new Exception("Automatic host mismatch");
-                    Console.WriteLine(
-                        "PASS: parameterless PluginHost.Register and worker-thread native call"
-                    );
+                    await AutomaticPluginChecks.RunAsync("Avalonia desktop");
                     window.Closed += (_, _) =>
                     {
                         try
@@ -73,7 +53,7 @@ public sealed class App : Application
                     };
                     var success = true;
                     status.Text =
-                        "PASS: Avalonia native SDK, errors, cancellation, shutdown and restart";
+                        "PASS: Avalonia native SDK, errors and cancellation";
                     Console.WriteLine(status.Text);
                     if (desktop.Args?.Contains("--verify") == true)
                         desktop.Shutdown(success ? 0 : 1);

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <PackageId>DotNative.Plugins.Templates</PackageId>
-    <Version>0.1.0-preview.15</Version>
+    <Version>0.1.0-preview.16</Version>
     <PackageType>Template</PackageType>
     <Description>Framework-independent Kotlin/Swift native service plugin template with static C# APIs.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

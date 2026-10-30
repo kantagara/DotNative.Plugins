@@ -9,3 +9,6 @@ artifacts/
 firebase-test.json
 google-services.json
 GoogleService-Info.plist
+
+__pycache__/
+*.pyc
