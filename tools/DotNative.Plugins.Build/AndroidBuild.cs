@@ -5,15 +5,19 @@ using System.Xml.Linq;
 
 internal static class AndroidBuild
 {
-    internal static async Task Build(string output, string package, string host, string sdk)
+    internal static async Task Build(string output, string package, string host, string sdk, string minimum)
     {
+        if (!Version.TryParse(minimum.Contains('.') ? minimum : minimum + ".0", out var platform)
+            || platform.Major < 21 || platform.Minor != 0 || platform.Build > 0 || platform.Revision > 0)
+            throw new ArgumentException("Android minimum OS must be a whole API level of at least 21.");
+        var apiLevel = platform.Major;
         var dotnet = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet";
         Directory.CreateDirectory(output);
         File.WriteAllText(
             Path.Combine(output, "standalone-android.txt"),
             "JNI is supplied by .NET Android."
         );
-        await Run(dotnet, [host, output, "linux-bionic-arm64", "23", sdk]);
+        await Run(dotnet, [host, output, "linux-bionic-arm64", apiLevel.ToString(System.Globalization.CultureInfo.InvariantCulture), sdk]);
         var root = Path.Combine(output, "android");
         Directory.CreateDirectory(root);
         var template = Path.Combine(package, "tools", "AndroidProject");
@@ -83,12 +87,12 @@ internal static class AndroidBuild
         );
         File.WriteAllText(
             Path.Combine(module, "build.gradle"),
-            """
+            $$"""
             plugins { id 'com.android.library'; id 'org.jetbrains.kotlin.android' }
             android {
                 namespace 'com.dotnative.plugins'
                 compileSdk 36
-                defaultConfig { minSdk 23; consumerProguardFiles 'consumer-rules.pro' }
+                defaultConfig { minSdk {{apiLevel}}; consumerProguardFiles 'consumer-rules.pro' }
                 sourceSets.main.java.srcDir '../../plugin-java'
                 compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
             }

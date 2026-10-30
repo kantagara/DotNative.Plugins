@@ -15,7 +15,7 @@
     <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
     <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.10" />
-    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.16" />
-    <PackageReference Include="DotNative.Plugins.Avalonia" Version="0.1.0-preview.16" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.17" />
+    <PackageReference Include="DotNative.Plugins.Avalonia" Version="0.1.0-preview.17" />
   </ItemGroup>
 </Project>

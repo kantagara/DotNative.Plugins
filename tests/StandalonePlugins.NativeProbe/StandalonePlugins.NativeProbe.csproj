@@ -3,7 +3,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <TargetFramework>net9.0</TargetFramework>
     <PackageId>DotNative.Plugins.NativeProbe</PackageId>
-    <Version>0.1.0-preview.16</Version>
+    <Version>0.1.0-preview.17</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

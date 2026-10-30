@@ -9,6 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../PluginTemplate.csproj" />
-    <PackageReference Include="DotNative.Plugins.Native" Version="0.1.0-preview.16" />
+    <PackageReference Include="DotNative.Plugins.Native" Version="0.1.0-preview.17" />
   </ItemGroup>
 </Project>

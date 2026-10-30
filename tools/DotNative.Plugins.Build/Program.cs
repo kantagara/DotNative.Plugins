@@ -21,7 +21,7 @@ try
     }
     if (rid == "android" || rid.StartsWith("android-"))
     {
-        await AndroidBuild.Build(output, package, host, sdk);
+        await AndroidBuild.Build(output, package, host, sdk, minimum);
         return;
     }
     Directory.CreateDirectory(output);

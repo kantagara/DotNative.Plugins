@@ -12,11 +12,12 @@ import xml.etree.ElementTree as ET
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--template", action="store_true", help="Use only dotnet new and the template NuGet, never the DotNative CLI")
+parser.add_argument("--packages", type=Path, help="Use a downloaded release feed")
 args = parser.parse_args()
 args.template = True  # Public repository always uses dotnet new.
 
 root = Path(__file__).resolve().parents[2]
-feed = root / "artifacts/standalone-plugins/packages"
+feed = args.packages.resolve() if args.packages else root / "artifacts/standalone-plugins/packages"
 env = dict(os.environ, DOTNET_ROLL_FORWARD="Major")
 
 
@@ -43,7 +44,7 @@ with tempfile.TemporaryDirectory(prefix="dotnative-scaffold-") as directory:
     plugin = work / "Acme.Sample"
     if args.template:
         hive = work / "template-hive"
-        run("dotnet", "new", "install", feed / "DotNative.Plugins.Templates.0.1.0-preview.16.nupkg",
+        run("dotnet", "new", "install", feed / "DotNative.Plugins.Templates.0.1.0-preview.17.nupkg",
             "--debug:custom-hive", hive)
         run("dotnet", "new", "dotnative-plugin", "-n", "Acme.Sample", "-o", plugin,
             "--debug:custom-hive", hive)

@@ -10,7 +10,7 @@
     <RestorePackagesPath>$(MSBuildThisFileDirectory)../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.16" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.17" />
     <Compile Include="../DotNative.Tests/EventChannelTests.cs" Link="EventChannelTests.cs" />
   </ItemGroup>
 </Project>

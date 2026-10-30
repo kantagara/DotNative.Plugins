@@ -23,8 +23,8 @@
   <ItemGroup>
     <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
     <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
-    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.16" />
-    <PackageReference Include="DotNative.Plugins.Uno" Version="0.1.0-preview.16" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.17" />
+    <PackageReference Include="DotNative.Plugins.Uno" Version="0.1.0-preview.17" />
   </ItemGroup>
   <Target Name="SelectDesktopHost" AfterTargets="UnoImplicitPackages">
     <ItemGroup>

@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = 'kantagara/DotNative.Plugins'
-VERSION = '0.1.0-preview.16'
+VERSION = '0.1.0-preview.17'
 SAMPLES = {'Maui': 'Maui', 'Avalonia': 'Avalonia', 'Uno': 'Uno',
            'AvaloniaMobile': 'Avalonia', 'UnoMobile': 'Uno'}
 

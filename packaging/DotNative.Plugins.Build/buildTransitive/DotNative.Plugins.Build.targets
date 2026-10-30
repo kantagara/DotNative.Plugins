@@ -4,6 +4,7 @@
     <DotNativePluginMinimumOS
       Condition="'$(DotNativePluginMinimumOS)' == '' and '$(SupportedOSPlatformVersion)' != ''"
       >$(SupportedOSPlatformVersion)</DotNativePluginMinimumOS>
+    <DotNativePluginMinimumOS Condition="'$(DotNativePluginMinimumOS)' == '' and '$(TargetPlatformIdentifier)' == 'android'">21</DotNativePluginMinimumOS>
     <DotNativePluginMinimumOS Condition="'$(DotNativePluginMinimumOS)' == ''"
       >16.0</DotNativePluginMinimumOS>
   </PropertyGroup>

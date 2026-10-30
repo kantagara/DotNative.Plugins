@@ -22,8 +22,8 @@
     <RestorePackagesPath>$(MSBuildThisFileDirectory)../../../artifacts/standalone-plugins/consumer-packages</RestorePackagesPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNative.Plugins.Uno" Version="0.1.0-preview.16" />
-    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.16" />
+    <PackageReference Include="DotNative.Plugins.Uno" Version="0.1.0-preview.17" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.17" />
     <PackageReference Include="SkiaSharp" Version="3.119.4" />
     <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
   </ItemGroup>

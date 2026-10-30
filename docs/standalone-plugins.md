@@ -24,7 +24,7 @@ MAUI uses a page's `Loaded` event, Avalonia uses an opened window or attached ro
 After downloading the GitHub preview packages (or building them locally):
 
 ```sh
-dotnet new install ./artifacts/standalone-plugins/packages/DotNative.Plugins.Templates.0.1.0-preview.16.nupkg
+dotnet new install ./artifacts/standalone-plugins/packages/DotNative.Plugins.Templates.0.1.0-preview.17.nupkg
 dotnet new dotnative-plugin -n Acme.NativeInfo
 ```
 

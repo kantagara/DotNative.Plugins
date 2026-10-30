@@ -1,6 +1,6 @@
 # GitHub preview distribution
 
-Preview `v0.1.0-preview.16` is distributed as GitHub Release assets, **not on nuget.org**. It includes ten `.nupkg` files (the SDK, three adapters, build integration, native probe, Firebase Remote Config, and template) and a SHA-256 manifest.
+Preview `v0.1.0-preview.17` is distributed as GitHub Release assets, **not on nuget.org**. It includes ten `.nupkg` files (the SDK, three adapters, build integration, native probe, Firebase Remote Config, and template) and a SHA-256 manifest.
 
 Prerequisites: Python 3, the GitHub `gh` CLI, .NET 10 and the platform toolchains. Android requires the .NET Android workload, Android SDK and JDK 17; iOS requires macOS, Xcode and the iOS workload. MAUI requires its corresponding workloads. The build does not install those toolchains for you.
 
@@ -39,10 +39,18 @@ The sample's first native check calls `PluginHost.Register()` twice to test idem
 ## New plugin template
 
 ```sh
-dotnet new install ./artifacts/standalone-plugins/packages/DotNative.Plugins.Templates.0.1.0-preview.16.nupkg
+dotnet new install ./artifacts/standalone-plugins/packages/DotNative.Plugins.Templates.0.1.0-preview.17.nupkg
 dotnet new dotnative-plugin -n Acme.NativeInfo
 ```
 
 Configure the downloaded folder as a NuGet source for the generated project, alongside nuget.org. No DotNative CLI is needed. A plain `dotnet add package` without that source will not find these packages on nuget.org.
 
 The GitHub `Verify GitHub preview consumers` workflow runs actual Avalonia and Uno applications under Xvfb on Linux x64 using downloaded release packages and isolated caches. A workflow being present is not proof it passed: consult the linked Actions result and the separate verification evidence.
+
+## Official MAUI template acceptance test
+
+`tests/native/test-maui-new-project.py --packages /path/to/downloaded/feed --output /tmp/new-maui` invokes the official `dotnet new maui`, adds the adapter and probe packages, and adds a Loaded handler with parameterless registration and a worker-thread native SHA256 assertion. It leaves the template's Android minimum API 21 unchanged. Build with `-p:EmbedAssembliesIntoApk=true` when installing the APK directly instead of using IDE fast deployment.
+
+Preview.17 fixes the build SDK's previous hard-coded Android minimum of 23: the generated AAR now uses the application's declared minimum. An upstream plugin SDK may still require a higher minimum; that requirement is not bypassed. A successful build targeting API 21 is not a claim that runtime testing was performed on an API 21 device.
+
+Use `scripts/verify-android.py` and `scripts/verify-ios.py` to install and launch built samples and require a particular PASS marker. They fail on reported errors or timeouts and save the application console for inspection.
