@@ -53,7 +53,13 @@ close in [Avalonia](evidence/preview18-local/avalonia-windows-selection.txt) and
 [Uno](evidence/preview18-local/uno-windows-selection.txt). The Windows dialog now
 runs on its own STA thread and receives cancellation through a message window;
 it no longer blocks the framework dispatcher. These runs do not establish
-Windows implementations of Permissions or Sensors.
+Windows implementations of Permissions or Sensors. A subsequent final-package run exposed
+an early-cancellation race during shell dialog initialization. The Windows backend
+now retries `Close` while the dialog is not ready. Targeted final runs passed native
+storage, picker cancellation, subsequent native calls and window-close disposal in
+[Avalonia](evidence/preview18-local/avalonia-windows-final.txt) and
+[Uno](evidence/preview18-local/uno-windows-final.txt). These final runs did not repeat
+file selection; the selection evidence above is from the earlier candidate.
 
 [DotNative Android](evidence/preview18-local/dotnative-android.txt) also passed the
 four-plugin check through package references. This exposed a framework-side bug:

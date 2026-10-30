@@ -1,0 +1,26 @@
+[
+  {
+    "repository": "kantagara/DotNative.SecureStorage",
+    "revision": "cd9610cb341b737f930a06d13c22621e36b30549",
+    "project": "DotNative.SecureStorage.csproj",
+    "pull_request": "https://github.com/kantagara/DotNative.SecureStorage/pull/1"
+  },
+  {
+    "repository": "kantagara/DotNative.Permissions",
+    "revision": "4c24a383e70cbeb47d3621c34d269d1c72bb8538",
+    "project": "DotNative.Permissions.csproj",
+    "pull_request": "https://github.com/kantagara/DotNative.Permissions/pull/1"
+  },
+  {
+    "repository": "kantagara/DotNative.Sensors",
+    "revision": "fd7e1ed3929538cf8ea4360f6509b0d11ba83644",
+    "project": "DotNative.Sensors.csproj",
+    "pull_request": "https://github.com/kantagara/DotNative.Sensors/pull/1"
+  },
+  {
+    "repository": "kantagara/DotNative.FilePicker",
+    "revision": "ada3b195c250ca38355146cdeef2d8fb55d8d4c9",
+    "project": "DotNative.FilePicker.csproj",
+    "pull_request": "https://github.com/kantagara/DotNative.FilePicker/pull/1"
+  }
+]

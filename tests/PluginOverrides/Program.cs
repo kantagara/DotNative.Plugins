@@ -1,7 +1,6 @@
 using DotNative.Plugins;
 using DotNative.Permissions;
 using DotNative.FilePicker;
-using DotNative.WheelDatePicker;
 
 var first = PluginImplementations.Register<IPermissions>(() => new AppPermissions());
 try
@@ -33,21 +32,12 @@ if (releases != 1 || stream.CanRead) throw new Exception("Application resources 
 try { await file.OpenReadAsync(); throw new Exception("Disposed file reopened"); }
 catch (ObjectDisposedException) { }
 
-using var date = PluginImplementations.Register<IWheelDatePicker>(() => new AppDatePicker());
-if (await WheelDatePicker.ShowAsync() != new DateOnly(2030, 2, 3))
-    throw new Exception("Application date backend was not used");
 Console.WriteLine("PASS: packaged static APIs use application partial backends without DI or a native host; duplicate and stale registrations, file ownership");
 
 sealed class AppPicker(Func<PickedFile> select) : IFilePicker
 {
     public Task<PickedFile?> PickAsync(CancellationToken cancellationToken = default) =>
         Task.FromResult<PickedFile?>(select());
-}
-
-sealed class AppDatePicker : IWheelDatePicker
-{
-    public Task<DateOnly?> ShowAsync(DatePickerOptions? options = null, CancellationToken cancellationToken = default) =>
-        Task.FromResult<DateOnly?>(new DateOnly(2030, 2, 3));
 }
 
 sealed partial class AppPermissions : IPermissions
