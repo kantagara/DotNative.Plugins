@@ -28,5 +28,5 @@ threads. `new FirebaseRemoteConfig(host.Channels)` remains available for explici
 instance usage. The automatic adapter disposes its host at application/window shutdown. Installing a
 package cannot supply your Firebase configuration or initialize a host by itself.
 
-Version 0.0.3 is a local acceptance-test package, not a published production release.
+Version 0.1.0-preview.16 is distributed in the GitHub preview release, not on nuget.org. It is not a production release.
 Windows/Linux do not have an implementation in this package.
