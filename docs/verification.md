@@ -24,7 +24,7 @@ The final Uno SDK is `0.1.0-preview.15`. Windows/Linux and Uno mobile were rerun
 ## Other checks
 
 - 45 managed checks passed in the original development checkout, including static access, worker dispatch, scope precedence, codec/events, cancellation and disposal.
-- The clean standalone checkout builds all packages without private DotNative source or its CLI.
+- The clean standalone checkout builds all packages without private DotNative source or its CLI. Its independently built Uno Android APK was also installed and run: native calls and automatic root lifecycle restart passed, with no build warnings. APK inspection confirmed no DotNative Rust transport or renderer payload.
 - The standalone NuGet native test executes CryptoKit and checks transport/event behavior.
 - `dotnet new` creates a plugin in an isolated package cache. Both a direct ProjectReference and its packed NuGet execute its real Swift implementation.
 - Package inspection checks transitive bootstrap files, native sources, dependencies, and absence of Rust or renderer payloads.
