@@ -1,0 +1,8 @@
+Uno Skia X11; Debian 12 ARM64 container, Xvfb/Openbox, real GNOME Secret Service and xdg-desktop-portal-gtk. Local preview.18 packages with a fresh cache. The fixture was selected interactively through noVNC; this is not a mocked portal. Sensors/Permissions desktop implementations were not tested.
+
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: FilePicker native presentation and cancellation completed
+PASS: FilePicker selected owned UTF-8 fixture, read all native stream chunks, disposed stream/file, rejected reopen
+PASS: Uno desktop: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Uno native SDK, errors and cancellation
+PASS: automatic host disposed on window close

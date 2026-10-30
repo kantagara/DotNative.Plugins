@@ -31,12 +31,17 @@ public sealed class AndroidPluginActivity
             );
     }
 
-    public void OnActivityCreated(Activity activity, Bundle? savedInstanceState) =>
-        current = new(activity);
+    private void Track(Activity activity)
+    {
+        if (activity.Class?.Name != "com.dotnative.plugins.PluginResultActivity")
+            current = new(activity);
+    }
 
-    public void OnActivityResumed(Activity activity) => current = new(activity);
+    public void OnActivityCreated(Activity activity, Bundle? savedInstanceState) => Track(activity);
 
-    public void OnActivityStarted(Activity activity) => current = new(activity);
+    public void OnActivityResumed(Activity activity) => Track(activity);
+
+    public void OnActivityStarted(Activity activity) => Track(activity);
 
     public void OnActivityPaused(Activity activity) { }
 

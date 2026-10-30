@@ -8,6 +8,7 @@ public sealed partial class App : Application
     public App() => InitializeComponent();
 
     private Window? window;
+    internal Window? MainWindow => window;
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {

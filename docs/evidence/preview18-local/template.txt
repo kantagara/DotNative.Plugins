@@ -1,0 +1,3 @@
+PASS generated API: application partial backend without DI or native host
+PASS generated API: application partial backend without DI or native host
+PASS generated plugin: ProjectReference and NuGet both execute native implementation

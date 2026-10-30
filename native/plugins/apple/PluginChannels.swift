@@ -242,12 +242,28 @@ struct PluginCodec {
   }
   #if os(iOS)
     static var presenter: UIViewController? {
-      guard
-        let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first(
-          where: { $0.activationState == .foregroundActive }),
-        var controller = scene.windows.first(where: { $0.isKeyWindow })?.rootViewController
-      else { return nil }
-      while let presented = controller.presentedViewController { controller = presented }
+      let app = UIApplication.shared
+      guard app.applicationState != .background else { return nil }
+      let scenes = app.connectedScenes.compactMap { $0 as? UIWindowScene }.filter {
+        $0.activationState == .foregroundActive || $0.activationState == .foregroundInactive
+      }
+      // Some .NET hosts still use the UIApplicationDelegate window lifecycle.
+      // Do not require a UIScene when the host has a visible legacy window.
+      let windows = (scenes.isEmpty ? app.windows : scenes.flatMap { $0.windows }).filter {
+        !$0.isHidden && $0.rootViewController != nil
+      }
+      guard let window = windows.first(where: { $0.isKeyWindow })
+        ?? (windows.count == 1 ? windows.first : nil),
+        var controller = window.rootViewController else { return nil }
+      while true {
+        if let presented = controller.presentedViewController, !presented.isBeingDismissed {
+          controller = presented
+        } else if let navigation = controller as? UINavigationController,
+          let visible = navigation.visibleViewController { controller = visible
+        } else if let tabs = controller as? UITabBarController,
+          let selected = tabs.selectedViewController { controller = selected
+        } else { break }
+      }
       return controller
     }
   #elseif os(macOS)

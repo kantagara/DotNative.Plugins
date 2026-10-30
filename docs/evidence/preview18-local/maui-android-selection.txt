@@ -1,0 +1,9 @@
+MAUI, Android 16 ARM64 emulator. Locally packed preview.18; 200704-byte owned fixture. MainActivity was independently verified as topResumedActivity after selection; the helper had an incorrect expected-marker string and was stopped after those assertions.
+
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: Permissions native request callback and status=Granted
+PASS: Sensors two native samples and subscription disposal
+PASS: FilePicker native presentation and cancellation completed
+PASS: FilePicker selected owned UTF-8 fixture, read all native stream chunks, disposed stream/file, rejected reopen
+PASS: MAUI: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: native plugin through parameterless registration

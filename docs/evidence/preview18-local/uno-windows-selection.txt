@@ -1,0 +1,8 @@
+Uno Skia Win32, Windows 11 ARM64 VM. Local preview.18 packages, fresh consumer/cache; SecureStorage and Windows native FilePicker. Permissions/Sensors desktop backends are not covered.
+
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: FilePicker native presentation and cancellation completed
+PASS: FilePicker selected owned UTF-8 fixture, read all native stream chunks, disposed stream/file, rejected reopen
+PASS: Uno desktop: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Uno native SDK, errors and cancellation
+PASS: automatic host disposed on window close

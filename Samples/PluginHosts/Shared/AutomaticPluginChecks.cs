@@ -16,6 +16,9 @@ internal static class AutomaticPluginChecks
             throw new Exception("Registration is not idempotent");
         if (ReferenceEquals(previous, channels))
             throw new Exception("Recreated view reused a stopped host");
+#if MIGRATED_PLUGINS
+        await MigratedPluginChecks.RunAsync();
+#endif
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(15));
         var bytes = RandomNumberGenerator.GetBytes(20000);
         var hash = await Task.Run(() => Probe.HashAsync(bytes, deadline.Token));

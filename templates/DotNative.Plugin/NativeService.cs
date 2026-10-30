@@ -5,10 +5,16 @@ namespace PluginTemplate;
 public static class NativeApi
 {
     public static Task<string> ReadAsync(CancellationToken cancellationToken = default) =>
-        new NativeService(PluginRuntime.Current.Channels).ReadAsync(cancellationToken);
+        PluginImplementations.Resolve<INativeService>(
+            () => new NativeService(PluginRuntime.Current.Channels)).ReadAsync(cancellationToken);
 }
 
-public sealed class NativeService(IPlatformChannels channels)
+public interface INativeService
+{
+    Task<string> ReadAsync(CancellationToken cancellationToken = default);
+}
+
+public sealed class NativeService(IPlatformChannels channels) : INativeService
 {
     public async Task<string> ReadAsync(CancellationToken cancellationToken = default) =>
         (string)

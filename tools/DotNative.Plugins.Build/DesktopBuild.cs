@@ -97,6 +97,25 @@ internal static class DesktopBuild
         }
         args.AddRange(Entries("plugin-libraries.txt"));
         args.AddRange(Entries("plugin-linker-arguments.txt"));
+        foreach (var module in Entries("plugin-pkgconfig.txt"))
+        {
+            if (windows || !Regex.IsMatch(module, @"^[A-Za-z0-9][A-Za-z0-9_.+-]*$"))
+                throw new InvalidDataException("Invalid Linux pkg-config module: " + module);
+            var query = new ProcessStartInfo("pkg-config") { RedirectStandardOutput = true, RedirectStandardError = true };
+            query.ArgumentList.Add("--cflags");
+            query.ArgumentList.Add("--libs");
+            query.ArgumentList.Add(module);
+            using var queryProcess = Process.Start(query)!;
+            var flagsTask = queryProcess.StandardOutput.ReadToEndAsync();
+            var errorTask = queryProcess.StandardError.ReadToEndAsync();
+            await queryProcess.WaitForExitAsync();
+            var flags = await flagsTask;
+            var error = await errorTask;
+            if (queryProcess.ExitCode != 0) throw new InvalidOperationException($"Install the development package for {module}: {error}");
+            // pkg-config emits shell-escaped tokens; preserve escaped spaces in include paths.
+            foreach (Match flag in Regex.Matches(flags, @"(?:[^\s\\]+|\\.)+"))
+                args.Add(Regex.Replace(flag.Value, @"\\(.)", "$1"));
+        }
         var start = new ProcessStartInfo(
             Environment.GetEnvironmentVariable("CXX") ?? (windows ? "cl.exe" : "c++")
         )

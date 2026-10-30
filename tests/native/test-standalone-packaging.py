@@ -13,11 +13,11 @@ parser.add_argument("--android-apk", type=Path)
 parser.add_argument("--apple-library", type=Path)
 args = parser.parse_args()
 packages = args.packages
-version = "0.1.0-preview.17"
+version = "0.1.0-preview.18"
 
 
 def archive(name):
-    package_version = "0.1.0-preview.17" if name == "DotNative.Plugins.Build" else version
+    package_version = "0.1.0-preview.18" if name == "DotNative.Plugins.Build" else version
     return ZipFile(packages / f"{name}.{package_version}.nupkg")
 
 
@@ -41,6 +41,8 @@ with archive("DotNative.Plugins.Build") as package:
         "tools/AndroidProject/gradle/wrapper/gradle-wrapper.jar",
         "tools/PluginSdk/apple/PluginChannels.swift",
         "tools/PluginSdk/android/PluginChannels.kt",
+        "tools/PluginSdk/android/PluginResultActivity.kt",
+        "tools/PluginSdk/android/PluginResultFragment.kt",
         "tools/PluginSdk/apple/PluginTransport.swift",
         "tools/PluginSdk/cpp/PluginTransport.cpp",
     ):

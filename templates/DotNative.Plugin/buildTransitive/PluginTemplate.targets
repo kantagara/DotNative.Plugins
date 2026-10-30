@@ -54,6 +54,7 @@
       <_DotNativeExport Include="@(DotNativeNativeLinkerArgument)">
         <AssetType>DotNativeNativeLinkerArgument</AssetType>
       </_DotNativeExport>
+      <_DotNativeExport Include="@(DotNativePkgConfig)"><AssetType>DotNativePkgConfig</AssetType></_DotNativeExport>
     </ItemGroup>
   </Target>
 </Project>

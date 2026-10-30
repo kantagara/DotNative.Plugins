@@ -1,0 +1,15 @@
+Avalonia, Android 16 ARM64 emulator. Locally packed preview.18; 200704-byte owned fixture.
+
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: Permissions native request callback and status=Granted
+PASS: Sensors two native samples and subscription disposal
+PASS: FilePicker native presentation and cancellation completed
+PASS: FilePicker selected owned UTF-8 fixture, read all native stream chunks, disposed stream/file, rejected reopen
+PASS: Avalonia mobile cycle 1: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: automatic lifecycle disposed host and rejected pending native request
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: Permissions native request callback and status=Granted
+PASS: Sensors two native samples and subscription disposal
+PASS: FilePicker native presentation and cancellation completed
+PASS: Avalonia mobile cycle 2: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Avalonia mobile automatic root lifecycle restart

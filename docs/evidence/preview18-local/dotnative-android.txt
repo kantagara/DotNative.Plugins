@@ -1,0 +1,7 @@
+DotNative managed runtime with native UI, Android 16 ARM64 emulator. Local preview.18 plugin packages. FilePicker cancellation and return to host foreground; no selection in this run.
+
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: Permissions native request callback and status=Granted
+PASS: Sensors two native samples and subscription disposal
+PASS: FilePicker native presentation and cancellation completed
+PASS: DotNative packaged SecureStorage, Permissions, Sensors and FilePicker
