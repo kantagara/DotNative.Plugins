@@ -38,6 +38,31 @@ Consumers can use a direct `ProjectReference` during development or the packed N
 
 Android uses the .NET Android bridge to Kotlin; Apple and desktop use a small native ABI.
 
+### Application-owned implementations (local preview.18 candidate)
+
+A plugin can expose an interface alongside its static API. Applications may supply
+an implementation for an unsupported platform without using a DI container:
+
+```csharp
+using var registration = PluginImplementations.Register<IPermissions>(
+    () => new AppPermissions());
+var status = await Permissions.CheckAsync(PermissionKind.Camera);
+```
+
+`AppPermissions` can be a partial class split across the application's platform
+files. It implements `IPermissions`; it does not extend a type inside the plugin
+assembly. Keep the registration alive while it is needed. Duplicate registrations
+are rejected; disposing an old registration cannot remove its replacement.
+Native implementations still use `PluginHost.Register()` once the UI is ready.
+Built-in Permissions and Sensors currently target Android/iOS; desktop applications
+need their own implementations. SecureStorage and FilePicker include desktop backends.
+
+Linux plugins can declare native build dependencies with
+`<DotNativePkgConfig Include="gio-2.0" />`. The SDK resolves compiler/linker flags
+through `pkg-config`. FilePicker requires GIO development headers at build time,
+and a desktop session bus plus an installed file chooser portal backend at runtime.
+SecureStorage requires an available Secret Service, such as GNOME Keyring.
+
 ## Build from source
 
 The complete package build currently runs on macOS with .NET 10, the Android/iOS/Mac Catalyst workloads, Xcode, Android SDK, and JDK 17 installed:

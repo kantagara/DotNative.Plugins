@@ -2,7 +2,7 @@
   <ItemGroup>
     <DotNativeNativeSource
       Include="$(MSBuildThisFileDirectory)../Platform/Apple/Probe.swift"
-      Condition="'$(RuntimeIdentifier)' == 'osx-arm64' or '$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64'"
+      Condition="'$(RuntimeIdentifier)' == 'osx-arm64' or '$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-x64' or $([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('maccatalyst-'))"
     />
     <DotNativeNativeSource
       Include="$(MSBuildThisFileDirectory)../Platform/Android/Probe.kt"

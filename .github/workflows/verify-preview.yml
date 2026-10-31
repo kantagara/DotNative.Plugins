@@ -4,7 +4,7 @@ on:
     inputs:
       tag:
         description: GitHub release to test
-        default: v0.1.0-preview.17
+        default: v0.1.0-preview.18
         required: true
   release:
     types: [published]

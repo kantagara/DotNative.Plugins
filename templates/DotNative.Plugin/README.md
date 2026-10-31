@@ -33,3 +33,24 @@ the host UI thread. A call before registration or after shutdown reports an erro
 Add Android SDK dependencies in a Gradle file referenced by DotNativeAndroidGradle.
 Add Apple SDK archives/frameworks in a manifest referenced by
 DotNativeAppleDependencyManifest. Keep those declarations in buildTransitive.
+
+### Application implementations for unsupported platforms
+
+An application can supply `INativeService` without DI. Keep the returned registration
+alive for the application's lifetime and dispose it on shutdown:
+
+```csharp
+var registration = PluginImplementations.Register<INativeService>(() => new DesktopNativeService());
+var value = await NativeApi.ReadAsync();
+// At application shutdown:
+registration.Dispose();
+```
+
+The application may split its own `partial class DesktopNativeService : INativeService`
+across shared and platform-specific files. A partial class cannot extend a type
+from the installed NuGet assembly, so the interface is the extension boundary.
+Only compile the matching platform implementation in each target. An override
+that uses managed/HTTP APIs needs no native host; the built-in native implementation
+still uses `PluginHost.Register()`. Factories run per static call, and the application
+owns the lifetime and thread safety of the returned implementation. Duplicate active
+registrations for the same interface are rejected.

@@ -1,5 +1,113 @@
 # Runtime verification
 
+## Local preview.18 candidate — migration in progress
+
+These results use locally packed NuGet packages, not a published GitHub release.
+Avalonia on a physical iPhone 16 Pro running iOS 27.0 passed SecureStorage
+Keychain CRUD, Unicode and persistence across host recreation; camera permission
+request/check; two real accelerometer samples and subscription disposal;
+FilePicker presentation/cancellation; and two host lifecycle cycles.
+[Captured assertions](evidence/preview18-local/avalonia-ios27-device.txt).
+File selection/read and Camera capture are not covered by this run.
+
+The first physical launch crashed before plugin tests: UIKit rejected the legacy
+application lifecycle (`UIApplicationEvaluateRuntimeIssueForNoSceneLifecycleAdoption`).
+The Avalonia sample now declares a scene delegate and attaches Avalonia's existing
+window to its `UIWindowScene`. Its .NET scene delegate implements its own `Window`
+property; the binding's base model setter throws. The sample also tracks the source
+Info.plist as an incremental manifest input, since the installed iOS SDK tracked
+the path but otherwise reused stale manifest contents after edits.
+The corrected application completed both runtime cycles on the same phone.
+
+Follow-up physical runs also passed the same four-plugin checks in
+[MAUI](evidence/preview18-local/maui-ios27-device.txt) and
+[Uno](evidence/preview18-local/uno-ios27-device.txt). Uno required scene adoption
+too: its sample obtains the backing UIKit window through Uno's public
+`WindowHelper.GetNativeWindow` API, since its root controller is installed later
+than `WillConnect`. Uno completed two root lifecycle cycles; MAUI's run covered
+one host lifetime.
+
+The same local candidate also passed real document selection and complete native
+stream reads of a generated 200704-byte UTF-8 fixture, then disposal and rejection
+of reopening the disposed file:
+
+| Host | Actual runtime | Evidence |
+|---|---|---|
+| MAUI | Physical iPhone, iOS 27.0 | [Assertions](evidence/preview18-local/maui-ios27-file-selection.txt) |
+| Avalonia | iOS 26.5 simulator, two host cycles | [Assertions](evidence/preview18-local/avalonia-ios-simulator-selection.txt) |
+| Uno | iOS 26.5 simulator, two host cycles | [Assertions](evidence/preview18-local/uno-ios-simulator-selection.txt) |
+| MAUI | Android 16 ARM64 emulator | [Assertions](evidence/preview18-local/maui-android-selection.txt) |
+| Avalonia | Android 16 ARM64 emulator, two host cycles | [Assertions](evidence/preview18-local/avalonia-android-selection.txt) |
+| Uno | Android 16 ARM64 emulator, two host cycles | [Assertions](evidence/preview18-local/uno-android-selection.txt) |
+
+These runs found two cancellation defects. Android now owns external activity
+results through a transparent, unexported proxy Activity so cancellation actually
+closes the picker; verification checks the host returns to the foreground.
+iOS now waits for presentation and dismissal to finish before completing
+cancellation, allowing the next picker to open without racing UIKit transitions.
+Simulator sensor unavailability is reported as a limitation, not a sensor pass.
+The physical runs above are the evidence for real accelerometer delivery.
+Windows 11 ARM64 VM runs also passed SecureStorage, native dialog cancellation,
+complete fixture reads, stream/file disposal and automatic host disposal on window
+close in [Avalonia](evidence/preview18-local/avalonia-windows-selection.txt) and
+[Uno](evidence/preview18-local/uno-windows-selection.txt). The Windows dialog now
+runs on its own STA thread and receives cancellation through a message window;
+it no longer blocks the framework dispatcher. These runs do not establish
+Windows implementations of Permissions or Sensors. A subsequent final-package run exposed
+an early-cancellation race during shell dialog initialization. The Windows backend
+now retries `Close` while the dialog is not ready. Targeted final runs passed native
+storage, picker cancellation, subsequent native calls and window-close disposal in
+[Avalonia](evidence/preview18-local/avalonia-windows-final.txt) and
+[Uno](evidence/preview18-local/uno-windows-final.txt). These final runs did not repeat
+file selection; the selection evidence above is from the earlier candidate.
+
+[DotNative Android](evidence/preview18-local/dotnative-android.txt) also passed the
+four-plugin check through package references. This exposed a framework-side bug:
+managed continuations were only drained by display frames, which pause while a
+system picker covers the host. The Android host now wakes its UI queue for managed
+work and native replies. Its build also reconciles Maven classes and versions with
+.NET Android bindings to avoid duplicate classes.
+
+Linux runs passed SecureStorage through GNOME Secret Service and FilePicker through
+`xdg-desktop-portal` with the GTK backend in both
+[Avalonia](evidence/preview18-local/avalonia-linux-selection.txt) and
+[Uno](evidence/preview18-local/uno-linux-selection.txt). These were real applications
+on Debian 12 ARM64 with Xvfb/Openbox; the generated fixture was selected through
+noVNC, not a mocked portal. Complete native reads, cancellation and host disposal
+passed. The plugin uses GIO on a worker thread and no longer casts a framework
+window pointer to `GtkWindow*`. Linux builds require `pkg-config` and GIO development
+headers; running requires a session bus, a file chooser portal backend and an
+unlocked Secret Service for storage. The build package resolves declared
+`DotNativePkgConfig` modules.
+
+The locked-keyring regression initially passed once, then hung on repetition.
+Review found that the managed `SecretSchema` declaration omitted native reserved
+fields. The backend now uses `secret_schema_newv` to allocate the complete native
+schema and `secret_password_free` to release password results. Native calls receive
+a `GCancellable`, with token registration disposed before the native handle.
+After the fix, six consecutive locked-keyring runs cancelled at approximately two
+seconds. The final package also passed Unicode CRUD, update/enumeration/delete and
+another cancellation at 2009 ms
+([assertions](evidence/preview18-local/linux-storage-cancellation.txt)).
+`tests/SecretServiceCancellation` reproduces this only in an isolated Linux
+container with its own session bus/login keyring and
+`DOTNATIVE_ISOLATED_KEYRING_TEST=1`. Unlock that disposable collection afterward
+and run with `cleanup`, or discard the container. Never point it at a user session.
+
+macOS ARM64 runs passed native Keychain CRUD, FilePicker cancellation, complete
+fixture reads, stream/file disposal and host disposal in
+[Avalonia](evidence/preview18-local/avalonia-macos-selection.txt) and
+[Uno](evidence/preview18-local/uno-macos-selection.txt). The picker cancellation
+acknowledgement now waits for the native panel completion callback. For UI control,
+the test executables were launched through local `.app` wrappers; Uno's wrapper
+needed the packaged font folders under the output `Resources` directory. The same
+Uno executable launched directly with `dotnet` passed startup without that copy.
+This is test-launcher packaging, not additional plugin registration. These runs
+cover one desktop host lifetime, not persistence across host recreation.
+
+Desktop Permissions/Sensors, other framework/OS combinations, the remaining
+plugins and release distribution are still pending.
+
 ## GitHub preview.17 — 2026-10-30
 
 **These executions consumed packages downloaded from the public [GitHub release](https://github.com/kantagara/DotNative.Plugins/releases/tag/v0.1.0-preview.17). Nothing was published to nuget.org.** Each consumer started in a new directory with a separate empty package cache. No consumer referenced the SDK source checkout. DotNative package SHA-256 values in the official MAUI consumer cache were compared with the release manifest and matched.

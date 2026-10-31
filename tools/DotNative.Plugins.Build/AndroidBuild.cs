@@ -71,15 +71,26 @@ internal static class AndroidBuild
             Directory.Delete(jni, true);
         File.WriteAllText(
             Path.Combine(module, "src/main/AndroidManifest.xml"),
-            "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" />"
+            "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"><application>"
+                + "<activity android:name=\"com.dotnative.plugins.PluginResultActivity\" android:exported=\"false\" "
+                + "android:theme=\"@android:style/Theme.Translucent.NoTitleBar\" android:excludeFromRecents=\"true\" />"
+                + "</application></manifest>"
         );
         File.WriteAllText(
             Path.Combine(root, "settings.gradle"),
             "pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }\ndependencyResolutionManagement { repositories { google(); mavenCentral() } }\ninclude ':plugins'\n"
         );
+        var kotlinCompiler = new Version(2, 2, 20);
+        foreach (var coordinate in coordinates.Where(c => c.StartsWith("org.jetbrains.kotlin:kotlin-stdlib:", StringComparison.Ordinal)))
+        {
+            var version = coordinate.Split(':')[2];
+            if (!Regex.IsMatch(version, @"^\d+\.\d+\.\d+$") || !Version.TryParse(version, out var parsed))
+                throw new InvalidDataException("Unsupported Kotlin standard library version: " + version);
+            if (parsed > kotlinCompiler) kotlinCompiler = parsed;
+        }
         File.WriteAllText(
             Path.Combine(root, "build.gradle"),
-            "plugins { id 'com.android.library' version '8.11.1' apply false; id 'org.jetbrains.kotlin.android' version '2.2.20' apply false }\n"
+            "plugins { id 'com.android.library' version '8.11.1' apply false; id 'org.jetbrains.kotlin.android' version '" + kotlinCompiler + "' apply false }\n"
         );
         File.WriteAllText(
             Path.Combine(root, "gradle.properties"),

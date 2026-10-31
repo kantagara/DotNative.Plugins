@@ -16,7 +16,7 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <SupportedOSPlatformVersion
-      Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'"
+      Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' or $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'"
       >16.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion
       Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'"
@@ -26,13 +26,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../Shared/AutomaticPluginChecks.cs" Link="AutomaticPluginChecks.cs" />
-    <PackageReference Include="DotNative.Firebase.RemoteConfig" Version="0.1.0-preview.17" Condition="'$(FirebaseTestConfig)' != ''" />
+    <PackageReference Include="DotNative.Firebase.RemoteConfig" Version="0.1.0-preview.18" Condition="'$(FirebaseTestConfig)' != ''" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
-    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.17" />
-    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.17" />
+    <PackageReference Include="DotNative.Plugins.NativeProbe" Version="0.1.0-preview.18" />
+    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.18" />
     <PackageReference
       Include="DotNative.Plugins.Android"
-      Version="0.1.0-preview.17"
+      Version="0.1.0-preview.18"
       Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'"
     />
   </ItemGroup>
@@ -42,4 +42,17 @@
   <ItemGroup Condition="'$(FirebaseTestConfig)' != ''">
     <EmbeddedResource Include="$(FirebaseTestConfig)" LogicalName="firebase-test.json" />
   </ItemGroup>
+  <PropertyGroup Condition="'$(VerifyMigratedPlugins)' == 'true'">
+    <DefineConstants>$(DefineConstants);MIGRATED_PLUGINS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(VerifyMigratedPlugins)' == 'true'">
+    <Compile Include="../Shared/MigratedPluginChecks.cs" Link="MigratedPluginChecks.cs" />
+    <PackageReference Include="DotNative.SecureStorage" Version="0.1.0-preview.18" />
+    <PackageReference Include="DotNative.Permissions" Version="0.1.0-preview.18" />
+    <PackageReference Include="DotNative.Sensors" Version="0.1.0-preview.18" />
+    <PackageReference Include="DotNative.FilePicker" Version="0.1.0-preview.18" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(VerifyFileSelection)' == 'true'">
+    <DefineConstants>$(DefineConstants);MIGRATED_FILE_SELECTION</DefineConstants>
+  </PropertyGroup>
 </Project>

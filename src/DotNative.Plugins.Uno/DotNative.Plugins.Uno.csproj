@@ -7,7 +7,7 @@
     <SupportedOSPlatformVersion
       Condition="'$(TargetPlatformIdentifier)' == 'ios' or '$(TargetPlatformIdentifier)' == 'maccatalyst'"
       >16.0</SupportedOSPlatformVersion>
-    <Version>0.1.0-preview.17</Version>
+    <Version>0.1.0-preview.18</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

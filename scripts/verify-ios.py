@@ -11,6 +11,7 @@ p.add_argument('--app', type=Path, required=True)
 p.add_argument('--app-id', required=True)
 p.add_argument('--expect', required=True)
 p.add_argument('--log', type=Path, required=True)
+p.add_argument('--timeout', type=int, default=60)
 a = p.parse_args()
 base = ['xcrun', 'simctl']
 def stop():
@@ -21,7 +22,7 @@ a.log.parent.mkdir(parents=True, exist_ok=True)
 with a.log.open('w') as log:
     process = subprocess.Popen(base + ['launch', '--console-pty', a.device, a.app_id], stdout=log, stderr=subprocess.STDOUT)
     try:
-        deadline = time.monotonic() + 60
+        deadline = time.monotonic() + a.timeout
         while time.monotonic() < deadline:
             output = a.log.read_text()
             if 'FAIL:' in output:

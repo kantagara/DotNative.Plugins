@@ -30,7 +30,7 @@ ET.ElementTree(config).write(output / 'NuGet.Config')
 project = output / 'FreshMaui.csproj'
 for package in ['DotNative.Plugins.Maui', 'DotNative.Plugins.NativeProbe']:
     subprocess.run([dotnet, 'add', str(project), 'package', package,
-                    '--version', '0.1.0-preview.17', '--no-restore'], cwd=output, check=True)
+                    '--version', '0.1.0-preview.18', '--no-restore'], cwd=output, check=True)
 page = output / 'MainPage.xaml.cs'
 source = page.read_text(encoding='utf-8-sig')
 assert source.count('InitializeComponent();') == 1

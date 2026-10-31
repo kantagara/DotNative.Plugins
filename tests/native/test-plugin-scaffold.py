@@ -44,7 +44,7 @@ with tempfile.TemporaryDirectory(prefix="dotnative-scaffold-") as directory:
     plugin = work / "Acme.Sample"
     if args.template:
         hive = work / "template-hive"
-        run("dotnet", "new", "install", feed / "DotNative.Plugins.Templates.0.1.0-preview.17.nupkg",
+        run("dotnet", "new", "install", feed / "DotNative.Plugins.Templates.0.1.0-preview.18.nupkg",
             "--debug:custom-hive", hive)
         run("dotnet", "new", "dotnative-plugin", "-n", "Acme.Sample", "-o", plugin,
             "--debug:custom-hive", hive)
@@ -52,7 +52,28 @@ with tempfile.TemporaryDirectory(prefix="dotnative-scaffold-") as directory:
     project = plugin / "Acme.Sample.csproj"
     assert not any(p.get("Include") == "DotNative" for p in ET.parse(project).iter("PackageReference"))
     app = plugin / "example-standalone/Standalone.csproj"
+    entry = app.parent / "Program.cs"
+    source = entry.read_text()
+    source = source.replace("// A console host", '''using (var implementation = PluginImplementations.Register<INativeService>(() => new FixtureService()))
+{
+    if (await NativeApi.ReadAsync() != "application partial backend")
+        throw new Exception("Generated static API did not use the application implementation");
+}
+Console.WriteLine("PASS generated API: application partial backend without DI or native host");
+
+// A console host''')
+    entry.write_text(source + "\nsealed partial class FixtureService : INativeService { }\n")
+    (app.parent / "FixtureService.Platform.cs").write_text('''sealed partial class FixtureService
+{
+    public Task<string> ReadAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult("application partial backend");
+    }
+}
+''')
     result = run("dotnet", "run", "--project", app)
+    assert "PASS generated API: application partial backend" in result
     assert "macOS: Version" in result if os.uname().sysname == "Darwin" else ": " in result
     for rid, platform, expected in [("", "android", ".kt"), ("maccatalyst-arm64", "maccatalyst", ".swift")]:
         result = run("dotnet", "msbuild", app, "-t:CollectDotNativeProjectPlugins",

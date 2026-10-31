@@ -68,6 +68,7 @@
         Include="@(_DotNativeProjectAssets)"
         Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativeNativeLinkerArgument'"
       />
+      <DotNativePkgConfig Include="@(_DotNativeProjectAssets)" Condition="'%(_DotNativeProjectAssets.AssetType)' == 'DotNativePkgConfig'" />
     </ItemGroup>
   </Target>
   <Target
@@ -113,6 +114,7 @@
       Lines="@(DotNativeNativeLinkerArgument)"
       Overwrite="true"
     />
+    <WriteLinesToFile File="$(_StandalonePluginOutput)/plugin-pkgconfig.txt" Lines="@(DotNativePkgConfig)" Overwrite="true" />
     <WriteLinesToFile
       File="$(_StandalonePluginOutput)/plugin-frameworks.txt"
       Lines="@(DotNativeNativeFramework)"

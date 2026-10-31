@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
+using Avalonia.Media;
 
 namespace PluginAvaloniaMobile;
 
@@ -16,7 +17,15 @@ public sealed class App : Avalonia.Application
 
     private static Control CreateProbe(ISingleViewApplicationLifetime lifetime, int cycle)
     {
-        var view = new TextBlock { Text = $"Checking native plugin, cycle {cycle}", Margin = new Thickness(24) };
+        var view = new TextBlock
+        {
+            Text = $"Checking native plugin, cycle {cycle}",
+            Margin = new Thickness(24, 64, 24, 24),
+            Foreground = Brushes.White,
+            Background = Brushes.Black,
+            FontSize = 18,
+            TextWrapping = TextWrapping.Wrap,
+        };
         var started = false;
         view.Loaded += async (_, _) =>
         {

@@ -21,6 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="../PluginTemplate.csproj" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
-    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.17" />
+    <PackageReference Include="DotNative.Plugins.Maui" Version="0.1.0-preview.18" />
   </ItemGroup>
 </Project>

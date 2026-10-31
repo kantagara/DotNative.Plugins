@@ -1,0 +1,1 @@
+PASS: packaged static APIs use application partial backends without DI or a native host; duplicate and stale registrations, file ownership

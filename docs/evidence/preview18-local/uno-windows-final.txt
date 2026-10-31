@@ -1,0 +1,5 @@
+PASS: SecureStorage native worker CRUD, Unicode, enumeration, host persistence
+PASS: FilePicker native presentation and cancellation completed
+PASS: Uno desktop: no-argument registration, worker native SHA256, 20 KB, errors, cancellation
+PASS: Uno native SDK, errors and cancellation
+PASS: automatic host disposed on window close

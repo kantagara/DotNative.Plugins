@@ -202,12 +202,16 @@ object NativeChannels {
     private var requestCode = 4096
 
     @JvmStatic private external fun connectNative(library: String)
+    private var hostWake: java.lang.reflect.Method? = null
+    @JvmStatic fun wakeHost() { hostWake?.invoke(null) }
 
     @JvmStatic fun connectHost() {
         // A standalone .NET Android host has no DotNative Java runner.
         val config = try { Class.forName("com.dotnative.runtime.BuildConfig") }
             catch (_: ClassNotFoundException) { return }
         val library = config.getField("DOTNATIVE_LIBRARY").get(null) as String
+        hostWake = try { Class.forName("com.dotnative.runtime.NativeHost").getMethod("requestTick") }
+            catch (_: NoSuchMethodException) { null }
         System.loadLibrary("dotnative_plugin_bridge")
         connectNative("lib$library.so")
     }
@@ -263,6 +267,7 @@ object NativeChannels {
             ByteBuffer.allocate(12 + payload.size).order(ByteOrder.LITTLE_ENDIAN).putLong(id).putInt(1).put(payload).array()
         } else bytes
         replies.addLast(value); replyBytes += value.size
+        wakeHost()
         return if (overloaded) 2 else 0
     }
 
@@ -326,11 +331,10 @@ object NativeChannels {
     }
 
     fun launch(activity: Activity, intent: Intent, callback: (Int, Intent?) -> Unit): Int {
-        check(requestCode < 65535) { "Activity request codes exhausted" }
-        val code = requestCode++
+        val code = allocateRequestCode()
         results[code] = callback
         try {
-            activity.startActivityForResult(intent, code)
+            PluginResultActivity.launch(activity, intent, code)
         } catch (error: Exception) {
             results.remove(code)
             throw error
@@ -338,8 +342,18 @@ object NativeChannels {
         return code
     }
 
+    fun allocateRequestCode(): Int {
+        check(requestCode < 65535) { "Plugin request codes exhausted" }
+        return requestCode++
+    }
+
+    fun requestPermissions(activity: Activity, code: Int, permissions: Array<String>) {
+        PluginResultFragment.get(activity).requestPermissions(permissions, code)
+    }
+
     fun cancelResult(code: Int) {
         results.remove(code)
+        PluginResultActivity.cancel(code)
     }
 
     @JvmStatic
@@ -363,6 +377,7 @@ object NativeChannels {
         check(Looper.myLooper() == Looper.getMainLooper())
         requests.clear(); replies.clear(); replyBytes = 0
         results.clear()
+        PluginResultActivity.cancelAll()
         channels.values.forEach {
             it.onReset?.invoke()
             it.onDetach?.invoke()
